@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -70,10 +70,10 @@ namespace KomodoClaims_Console
                         SeeAllClaims();
                         break;
                     case "2":
-                        //TakeCareOfNextClaim();
+                        TakeCareOfNextClaim();
                         break;
                     case "3":
-                        //AddNewClaim();
+                        AddNewClaim();
                         break;
                     case "4":
                         continueToRun = false;
@@ -85,6 +85,66 @@ namespace KomodoClaims_Console
                 }
 
             }
+        }
+
+        private void AddNewClaim()
+        {
+            Console.Clear();
+
+            Claim newClaim = new Claim();
+
+            Console.WriteLine("What number is the claim type?:\n" +
+                "1. Car:\n" +
+                "2. Home:\n" +
+                "3. Theft:\n"
+                );
+
+            string input = Console.ReadLine();
+            switch (input)
+            {
+                case "1":
+                    newClaim.ClaimType = ClaimType.Car;
+                    break;
+                case "2":
+                    newClaim.ClaimType = ClaimType.Home;
+                    break;
+                case "3":
+                    newClaim.ClaimType = ClaimType.Theft;
+                    break;
+                default:
+                    Console.WriteLine("Please choose a valid option");
+                    Console.ReadKey();
+                    break;
+            }
+
+            Console.WriteLine("Description of Incident");
+            newClaim.Description = Console.ReadLine();
+
+            Console.WriteLine("Cost of claim");
+            string priceAsString = Console.ReadLine();
+            int priceAsInt = Int32.Parse(priceAsString);
+            newClaim.ClaimAmount = priceAsInt;
+
+            Console.WriteLine("Date of Incident");
+            string dateAsString = Console.ReadLine();
+            DateTime dateAsDateTime = DateTime.Parse(dateAsString);
+            newClaim.DateOfIncident = dateAsDateTime;
+
+            Console.WriteLine("Date of claim");
+            string claimDateAsString = Console.ReadLine();
+            DateTime claimDateAsDateTime = DateTime.Parse(claimDateAsString);
+            newClaim.DateOfClaim = claimDateAsDateTime;
+
+            bool wasAdded = _repo.AddToQueueOfClaims(newClaim);
+            if (wasAdded == true)
+            {
+                Console.WriteLine("Your meal has been added to the menu");
+            }
+            else
+            {
+                Console.WriteLine("Oops something went wrong. Try again.");
+            }
+
         }
 
         private void SeeAllClaims()
@@ -100,6 +160,33 @@ namespace KomodoClaims_Console
             {
                 Console.WriteLine($"{claim.ClaimID,narrowPaddingLength}{claim.ClaimType,narrowPaddingLength}{claim.Description,paddingLength}{claim.ClaimAmount,narrowPaddingLength}{claim.DateOfIncident.ToString("mm-dd-yyyy"),paddingLength}{claim.DateOfClaim.ToString("mm-dd-yyy"),paddingLength}{claim.IsValid,paddingLength}");
             }
+        }
+
+        private void TakeCareOfNextClaim()
+        {
+            Queue<Claim> claimList = _repo.GetQueueOfClaims();
+            Claim claim = claimList.Peek();
+          
+            Console.WriteLine($"ClaimId {claim.ClaimID}\n" +
+                    $"Type {claim.ClaimType}\n" +
+                    $"Description {claim.Description}\n" +
+                    $"Amount ${claim.ClaimAmount}\n" +
+                    $"DateOfIncident {claim.DateOfIncident.ToString("mm-dd-yyyy")}\n" +
+                    $"DateOfClaim {claim.DateOfClaim.ToString("mm-dd-yyy")}\n" +
+                    $"IsValid {claim.IsValid}");
+           
+            Console.WriteLine($"Would you like to handle this now, y/n");
+            string input = Console.ReadLine();
+
+            if (input == "y")
+            {
+                _repo.HandleNextClaim();
+            }
+            else if (input == "n")
+            {
+                return;
+            }
+            else Console.WriteLine("Please enter y/n");
         }
     }
 }

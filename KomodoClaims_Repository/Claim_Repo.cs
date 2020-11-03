@@ -11,11 +11,16 @@ namespace KomodoClaims_Repository
         private Queue<Claim> _claimDirectory = new Queue<Claim>();
         private int _idCounter = 1;
 
-        public void AddToQueueOfClaims(Claim claim)
+        public bool AddToQueueOfClaims(Claim claim)
         {
             claim.ClaimID = _idCounter;
             _claimDirectory.Enqueue(claim);
             _idCounter++;
+            int startingCount = _claimDirectory.Count;
+
+
+            bool wasAdded = (_claimDirectory.Count > startingCount) ? true : false;
+            return wasAdded;
         }
 
         public Queue<Claim> GetQueueOfClaims()
