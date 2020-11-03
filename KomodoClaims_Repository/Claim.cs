@@ -23,6 +23,7 @@ namespace KomodoClaims_Repository
             DateOfClaim = dateOfClaim;
         }
 
+        public Claim() { }
         public ClaimType ClaimType { get; set; }
         public int ClaimID { get; set; }
         public string Description { get; set; }

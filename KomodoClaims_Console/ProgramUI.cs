@@ -135,15 +135,7 @@ namespace KomodoClaims_Console
             DateTime claimDateAsDateTime = DateTime.Parse(claimDateAsString);
             newClaim.DateOfClaim = claimDateAsDateTime;
 
-            bool wasAdded = _repo.AddToQueueOfClaims(newClaim);
-            if (wasAdded == true)
-            {
-                Console.WriteLine("Your meal has been added to the menu");
-            }
-            else
-            {
-                Console.WriteLine("Oops something went wrong. Try again.");
-            }
+            _repo.AddToQueueOfClaims(newClaim);
 
         }
 
