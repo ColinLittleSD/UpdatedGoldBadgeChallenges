@@ -33,15 +33,15 @@ namespace KomodoClaims_Tests
             Assert.IsTrue(queueHasClaims);
         }
 
-        [TestMethod]
-        public void MyTestMethod()
-        {
-            Claim claim = new Claim();
-            Claim_Repo repository = new Claim_Repo();
+        //[TestMethod]
+        //public void MyTestMethod()
+        //{
+        //    Claim claim = new Claim();
+        //    Claim_Repo repository = new Claim_Repo();
 
-            repository.HandleNextClaim();
+        //    repository.HandleNextClaim();
 
-            Assert.AreEqual(0, repository.ClaimCount());
-        }
+        //    Assert.AreEqual(0, repository.ClaimCount());
+        //}
     }
 }
